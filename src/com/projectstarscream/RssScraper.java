@@ -2,27 +2,47 @@ package com.projectstarscream;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.List;
 
 public class RssScraper {
 
-    String url = "https://thenextweb.com/latest/";
+   private final String url = "https://thenextweb.com/latest/";
+   private final String classSelector = ".story-title";
+   private final String classSelector2 = ".story-chunk";
+   private final String imageSelector = "div a, .story-image style";
+   private final String attrSelector = "href";
 
 
-    //TODO handle IOException
-    public void displayTitle() throws IOException {
+
+    public void displayPosts() throws IOException {
 
     Document doc = Jsoup.connect(url).get();
-
-    Elements titles = doc.select(".story-title");
-    String titleText = titles.text();
+    //Parses post title
+    Elements titles = doc.select(classSelector);
+    List<String> titleText = titles.eachText();
+    //Parses post images
+    //TODO CSS third-party parser
+    Elements images = doc.select(imageSelector);
+    List<String> postImage = images.eachAttr("background-image");
+    //Parses post summary
+    Elements summaries = doc.select(classSelector2);
+    List<String> postSummary = summaries.eachText();
+    //Parses post [embedded] link
     Elements titleLink = titles.select("a");
+    List<String> relativeLink = titleLink.eachAttr(attrSelector);
 
-      // for (Element title : titles)
-            System.out.println(titleLink);
+    for (int i = 0; i < titleText.size(); i++) {
+        System.out.println(postImage.get(i));
+        System.out.println(titleText.get(i));
+        System.out.println(postSummary.get(i));
+        System.out.println(relativeLink.get(i));
+        System.out.println("");
+    }
+
+
     }
 
 
