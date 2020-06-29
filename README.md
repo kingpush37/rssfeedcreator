@@ -1,1 +1,1 @@
-# rssfeedcreator
+# started as a Rss feed scraper, now just a basic web page scraper, using jsoup

@@ -10,9 +10,9 @@ import java.util.List;
 public class RssScraper {
 
    private final String url = "https://thenextweb.com/latest/";
-   private final String classSelector = ".story-title";
-   private final String classSelector2 = ".story-chunk";
-   private final String imageSelector = "div a, .story-image style";
+   private final String titleSelector = ".story-title";
+   private final String classSelector = ".story-chunk";
+   private final String imageSelector = "div a, .story-image style"; // not working, needs css parser
    private final String attrSelector = "href";
 
 
@@ -21,14 +21,14 @@ public class RssScraper {
 
     Document doc = Jsoup.connect(url).get();
     //Parses post title
-    Elements titles = doc.select(classSelector);
+    Elements titles = doc.select(titleSelector);
     List<String> titleText = titles.eachText();
     //Parses post images
     //TODO CSS third-party parser
     Elements images = doc.select(imageSelector);
     List<String> postImage = images.eachAttr("background-image");
     //Parses post summary
-    Elements summaries = doc.select(classSelector2);
+    Elements summaries = doc.select(classSelector);
     List<String> postSummary = summaries.eachText();
     //Parses post [embedded] link
     Elements titleLink = titles.select("a");
